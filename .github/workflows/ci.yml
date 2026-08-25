@@ -24,7 +24,7 @@ jobs:
         run: uv sync --extra dev
 
       - name: Lint
-        run: uv run ruff check src tests
+        run: uv run ruff check src tests scripts
 
       - name: Test
         run: uv run pytest -q
@@ -32,10 +32,12 @@ jobs:
       # The portfolio's signature check: every number in the README is
       # generated, so a hand-edited result fails the build rather than
       # silently drifting from the code that produced it.
+      #
+      # generate_results.py also asserts every claim it prints and exits
+      # non-zero if one breaks, so this step fails on a broken claim as
+      # well as on a stale file.
       - name: Verify generated results are current
         run: |
-          if [ -f scripts/generate_results.py ]; then
-            uv run python scripts/generate_results.py
-            git diff --exit-code results/ \
-              || (echo "results/ is stale -- regenerate and commit" && exit 1)
-          fi
+          uv run python scripts/generate_results.py
+          git diff --exit-code results/ \
+            || (echo "results/ is stale -- regenerate and commit" && exit 1)
