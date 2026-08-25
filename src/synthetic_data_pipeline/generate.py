@@ -150,38 +150,6 @@ MULTILINGUAL_SEEDS: tuple[tuple[str, str, str], ...] = (
      "{obj} को edge पर deploy करना बेहतर होता है क्योंकि latency कम होती है।"),
 )
 
-# Retained for reference and used by the tests as a fixed, hand-checked sample
-# of what the slice renders to.
-MULTILINGUAL: tuple[tuple[str, str, str], ...] = (
-    ("es", "Explica como funciona una cola de prioridad.",
-     "Una cola de prioridad ordena los elementos por su importancia relativa."),
-    ("fr", "Decris brievement le role d'un index inverse.",
-     "Un index inverse associe chaque terme a la liste des documents qui le contiennent."),
-    ("de", "Erklaere kurz, wie ein Schreibprotokoll funktioniert.",
-     "Ein Schreibprotokoll speichert Aenderungen, bevor sie angewendet werden."),
-    ("pt", "Descreva o funcionamento de um limitador de taxa.",
-     "Um limitador de taxa controla quantos pedidos passam por unidade de tempo."),
-    ("ru", "Объясните, как работает журнал предзаписи.",
-     "Журнал предзаписи сохраняет изменения до их применения к основным данным."),
-    ("el", "Εξηγήστε πώς λειτουργεί μια ουρά προτεραιότητας.",
-     "Μια ουρά προτεραιότητας ταξινομεί τα στοιχεία κατά σημασία."),
-    ("hi", "बताइए कि एक व्युत्क्रम सूचकांक कैसे काम करता है।",
-     "व्युत्क्रम सूचकांक प्रत्येक शब्द को उन दस्तावेज़ों से जोड़ता है जिनमें वह आता है।"),
-    ("ar", "اشرح كيف يعمل مخزن الأعمدة.",
-     "يخزن مخزن الأعمدة البيانات حسب العمود بدلا من الصف."),
-    ("zh", "请解释一致性哈希环的工作原理。",
-     "一致性哈希环把键和节点映射到同一个环上，从而减少重新分配。"),
-    ("ko", "우선순위 큐가 어떻게 동작하는지 설명하세요.",
-     "우선순위 큐는 항목을 중요도 순서로 정렬하여 처리합니다."),
-    # Code-switching: two scripts inside one record. These are the rows that
-    # break naive language-ID, which is exactly why they are here.
-    ("es-en", "Explica el trade-off de usar a bloom filter en produccion.",
-     "El trade-off es que a bloom filter tiene false positives pero usa poca memoria."),
-    ("hi-en", "बताइए कि rate limiter को production में कैसे deploy करते हैं।",
-     "Rate limiter को edge पर deploy करना बेहतर होता है क्योंकि latency कम होती है।"),
-)
-
-
 def multilingual_records() -> list[tuple[str, str, str]]:
     """Render every (seed x term) combination into a distinct record.
 
