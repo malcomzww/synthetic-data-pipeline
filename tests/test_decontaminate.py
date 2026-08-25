@@ -77,6 +77,17 @@ class TestEvalIndex:
     def test_records_how_many_items_it_indexed(self):
         assert EvalIndex.build(EVAL_SET, n=DEFAULT_N).n_items == len(EVAL_SET)
 
+    def test_is_contaminated_agrees_with_overlap(self):
+        # These tests assert against `is_contaminated`, while the
+        # decontaminate stage branches on `overlap` directly to stay
+        # single-pass. That split is only safe while the two agree, so pin it
+        # here -- otherwise a change to the stage's condition passes the whole
+        # suite while the pipeline diverges from what was tested.
+        index = EvalIndex.build(EVAL_SET, n=DEFAULT_N)
+        span = " ".join(tokenise(EVAL_SET[0])[:DEFAULT_N])
+        for text in (CLEAN, span, f"Novel. {span}", "", "short"):
+            assert index.is_contaminated(text) == bool(index.overlap(text))
+
 
 class TestDecontaminate:
     def test_drops_contaminated_and_keeps_clean(self):

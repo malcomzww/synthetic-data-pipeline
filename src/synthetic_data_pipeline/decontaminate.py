@@ -102,6 +102,13 @@ class EvalIndex:
         says, and the whole point of choosing n large is that a single
         coincidental match is already implausible. Moving the bar to 2+ would
         be a second undeclared threshold hiding inside the first.
+
+        Most of the decontamination tests assert against this predicate while
+        `decontaminate` branches on `overlap` directly, for a single pass over
+        the text. That split is only safe while the two remain equivalent, so
+        `test_is_contaminated_agrees_with_overlap` pins it: without that test,
+        changing the stage's condition could pass the whole suite while the
+        pipeline behaved differently from what was tested.
         """
         return bool(self.overlap(text))
 
@@ -259,6 +266,11 @@ def decontaminate(
             out.append(record)
             continue
         inspected += 1
+        # One `overlap` call supplies both the decision and the evidence.
+        # `is_contaminated` is defined as `bool(overlap(...))`, and that
+        # equivalence is asserted by a test -- so this stays single-pass
+        # without letting the stage's notion of "contaminated" drift from the
+        # predicate the rest of the tests assert against.
         hits = index.overlap(record.text)
         if hits:
             flagged += 1
