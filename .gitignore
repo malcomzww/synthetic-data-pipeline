@@ -12,3 +12,4 @@ build/
 !.env.example
 .DS_Store
 .scratch/
+results/environment.md
